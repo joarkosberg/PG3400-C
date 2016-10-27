@@ -4,35 +4,41 @@
 
 void swap(int *array, int a, int b);
 
-int main (){
+int main (int argc, char *argv[]){
 	//Welcome message
 	printf("Welcome to word sort!\n");
 
 
-/*
-Gather:
-With this assignment you will find some files with individual names on lines.
-Write a program that takes a filename as input and reads the names from the file
-until the end of file. This program should store the names in an array and also
-the count in a variable. To store variable length names, you can either use an
-array of pointers or a 2D array with a reasonable maximum length for each
-name.
 
-Example command line:
-./myprogram human_male.txt
-Execution of this must read all the integers in human_male.txt
-*/
-
-	//Get user input
+	//Get file name
 	int length = 30;
-	char *file = malloc(length*sizeof(char));
+	char *filename = malloc(length*sizeof(char));
+	if (argc < 2){
+      printf("No filename given!\n");
+      exit(EXIT_FAILURE);
+  	}
+   	strcpy(filename, argv[1]); //Check this method
+	printf("File to read: %s\n", filename);
 
-	scanf("%s", file);
-	printf("File to read: %s\n", file);
+
 
 	//Get words from file
+	int maxWords = 1024;
+	char strings[maxWords][20];
+	int size = 0;
+	FILE *file;
+	file = fopen(filename, "r");
+	if(file == 0){
+		printf("Failed to open file!\n");
+		exit(EXIT_FAILURE);
+	}
 
-
+	while (size < maxWords && fgets(strings[size], sizeof(strings[0]), file)){
+		strings[size][strlen(strings[size])-1] = '\0';
+        size = size + 1;
+	}
+	fclose(file);
+	printf("Words in list = %d\n", size);
 /*
 
 	//Sort!
