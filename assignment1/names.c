@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void swap(int *array, int a, int b);
+void swap(char **array, char *temp, int i);
 
 int main (int argc, char *argv[]){
 	//Welcome message
@@ -11,8 +11,8 @@ int main (int argc, char *argv[]){
 
 
 	//Get file name
-	int length = 30;
-	char *filename = malloc(length*sizeof(char));
+	int nameLength = 30;
+	char *filename = malloc(nameLength*sizeof(char));
 	if (argc < 2){
       printf("No filename given!\n");
       exit(EXIT_FAILURE);
@@ -23,59 +23,72 @@ int main (int argc, char *argv[]){
 
 
 	//Get words from file
-	int maxWords = 1024;
-	char strings[maxWords][20];
+	char **names;
 	int size = 0;
+	int capacity = 64; 
+	int maxChars = 32;  //This dosent work in any way
+	names = malloc(capacity * sizeof(char*));
+	for (int i = 0; i < capacity; i++)
+	    names[i] = malloc(maxChars*sizeof(char));
+
 	FILE *file;
 	file = fopen(filename, "r");
+	free(filename);
 	if(file == 0){
 		printf("Failed to open file!\n");
 		exit(EXIT_FAILURE);
 	}
 
-	while (size < maxWords && fgets(strings[size], sizeof(strings[0]), file)){
-		strings[size][strlen(strings[size])-1] = '\0';
+	while (fgets(names[size], maxChars*sizeof(char), file)){
         size = size + 1;
+        if(size == capacity){
+			int orgCapacity = capacity;
+			capacity = capacity * 2;
+			names = realloc(names, capacity*sizeof(char*));
+			for (int i = orgCapacity; i < capacity; i++)
+	    		names[i] = malloc(maxChars*sizeof(char));
+		}
 	}
 	fclose(file);
 	printf("Words in list = %d\n", size);
-/*
 
-	//Sort!
-	int done = 1;
+
+
+	//Sorting
+	int done;
+	char *temp = malloc(maxChars*sizeof(char)); 
 	do{
 		done = 1;
-		for(int i = 1; i < size; i++){
-			if(numbers[i-1] < numbers[i]){
+		for(int i = 0; i < size - 1; i++){
+			if(strcasecmp(names[i], names[i+1]) > 0){
 				done = 0;
-				swap(numbers, i, i-1);
+				swap(names, temp, i);
 			}
 		}
 	} while (!done);
-*/
+	free(temp);
 
 
 
-/*
-Sorting:
-Once the names are read into the memory, you should sort them alphabetically,
-preferably without copying to a new location. You should already have learned
-Bubble Sort. After sorting the program should print all the names.
-*/
-
-
-/*
 	//Print
-	printf("You sorted %d numbers:\n", size);
+	printf("You sorted %d names:\n", size);
 	for(int k = 0; k < size; k++){
-		printf("%d - ", numbers[k]);
+		printf("%d: \t%s", k+1, names[k]);
 	}
 	printf("\n");
-*/
+
+
+
+	//Free upp memory
+	for(int i = 0; i < capacity; i++)
+		free(names[i]);
+	free(names);
 }
 
-void swap(int *array, int a, int b){
-	int temp = array[a];
-	array[a] = array[b];
-	array[b] = temp;
+
+
+void swap(char **array, char *temp, int i){
+	strcpy(temp, array[i + 1]);
+	strcpy(array[i + 1], array[i]);
+	strcpy(array[i], temp);
 }
