@@ -8,8 +8,6 @@ int main (int argc, char *argv[]){
 	//Welcome message
 	printf("Welcome to word sort!\n");
 
-
-
 	//Get file name
 	int nameLength = 30;
 	char *filename = malloc(nameLength*sizeof(char));
@@ -19,8 +17,6 @@ int main (int argc, char *argv[]){
   	}
    	strcpy(filename, argv[1]);
 	printf("File to read: %s\n", filename);
-
-
 
 	//Get words from file
 	//Open file
@@ -35,27 +31,35 @@ int main (int argc, char *argv[]){
 	//Init resources
 	char **names;
 	int size = 0;
-	int capacity = 64; 
-	int maxChars = 32;
+	int capacity = 2; //Since one of the files is missing newline at the end.
+	int maxChars = 1;
+	int tmpCount = 0;
+	char n;
+	while((n = fgetc(file)) != EOF) {
+        if(n == '\n'){
+        	if(tmpCount > maxChars)
+                maxChars = tmpCount;
+        	capacity++;
+        	tmpCount = 0;
+    	} else {
+    		tmpCount++;
+    	}
+    }
+    maxChars = maxChars + 2;
+    printf("Longest string: %d\n", maxChars);
+
+    //Allocate memory
 	names = malloc(capacity * sizeof(char*));
 	for (int i = 0; i < capacity; i++)
 	    names[i] = malloc(maxChars*sizeof(char));
 
 	//Get words
+	fseek(file, 0, SEEK_SET);
 	while (fgets(names[size], maxChars*sizeof(char), file)){
         size = size + 1;
-        if(size == capacity){
-			int orgCapacity = capacity;
-			capacity = capacity * 2;
-			names = realloc(names, capacity*sizeof(char*));
-			for (int i = orgCapacity; i < capacity; i++)
-	    		names[i] = malloc(maxChars*sizeof(char));
-		}
 	}
 	fclose(file);
-	printf("Words in list = %d\n", size);
-
-
+	printf("Words in list: %d\n", size);
 
 	//Sort words
 	int done;
@@ -71,24 +75,18 @@ int main (int argc, char *argv[]){
 	} while (!done);
 	free(temp);
 
-
-
 	//Print sorted words
-	printf("You sorted %d names:\n", size);
+	printf("Words sorted:\n");
 	for(int k = 0; k < size; k++){
 		printf("%d: \t%s", k+1, names[k]);
 	}
 	printf("\n");
-
-
 
 	//Free upp memory
 	for(int i = 0; i < capacity; i++)
 		free(names[i]);
 	free(names);
 }
-
-
 
 void swap(char **array, char *temp, int i){
 	strcpy(temp, array[i + 1]);
