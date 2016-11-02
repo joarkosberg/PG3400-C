@@ -17,20 +17,13 @@ int main (int argc, char *argv[]){
       printf("No filename provided!\n");
       exit(EXIT_FAILURE);
   	}
-   	strcpy(filename, argv[1]); //Check this method
+   	strcpy(filename, argv[1]);
 	printf("File to read: %s\n", filename);
 
 
 
 	//Get words from file
-	char **names;
-	int size = 0;
-	int capacity = 64; 
-	int maxChars = 32;  //This dosent work in any way
-	names = malloc(capacity * sizeof(char*));
-	for (int i = 0; i < capacity; i++)
-	    names[i] = malloc(maxChars*sizeof(char));
-
+	//Open file
 	FILE *file;
 	file = fopen(filename, "r");
 	free(filename);
@@ -39,6 +32,16 @@ int main (int argc, char *argv[]){
 		exit(EXIT_FAILURE);
 	}
 
+	//Init resources
+	char **names;
+	int size = 0;
+	int capacity = 64; 
+	int maxChars = 32;
+	names = malloc(capacity * sizeof(char*));
+	for (int i = 0; i < capacity; i++)
+	    names[i] = malloc(maxChars*sizeof(char));
+
+	//Get words
 	while (fgets(names[size], maxChars*sizeof(char), file)){
         size = size + 1;
         if(size == capacity){
