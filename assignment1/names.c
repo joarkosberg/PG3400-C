@@ -45,7 +45,7 @@ int main (int argc, char *argv[]){
     		tmpCount++;
     	}
     }
-    maxChars = maxChars + 2;
+    maxChars = maxChars + 2; //Since '\n' and '/0' will be added
     printf("Longest string: %d\n", maxChars);
 
     //Allocate memory
