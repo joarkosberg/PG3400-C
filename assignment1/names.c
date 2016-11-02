@@ -14,7 +14,7 @@ int main (int argc, char *argv[]){
 	int nameLength = 30;
 	char *filename = malloc(nameLength*sizeof(char));
 	if (argc < 2){
-      printf("No filename given!\n");
+      printf("No filename provided!\n");
       exit(EXIT_FAILURE);
   	}
    	strcpy(filename, argv[1]); //Check this method
@@ -54,7 +54,7 @@ int main (int argc, char *argv[]){
 
 
 
-	//Sorting
+	//Sort words
 	int done;
 	char *temp = malloc(maxChars*sizeof(char)); 
 	do{
@@ -70,7 +70,7 @@ int main (int argc, char *argv[]){
 
 
 
-	//Print
+	//Print sorted words
 	printf("You sorted %d names:\n", size);
 	for(int k = 0; k < size; k++){
 		printf("%d: \t%s", k+1, names[k]);
