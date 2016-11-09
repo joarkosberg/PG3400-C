@@ -1,5 +1,3 @@
 # Assignement 1 - PG3400
 Programmet tar inn ett filnavn, henter alle ord fra filen og printer ut en sortert liste. Programmet tar filnavnet som en parameter ved start, dette blir så lest og sjekket om noe parameter er gitt av bruker. Er det gitt går man videre. 
 Så blir filen åpnet og programmet sjekker om den faktisk finnes. Filen blir først lest en gang der det sjekkes for lengste og antall ord. Dette for å unngå unødvendig reallocering senere. Så initieres arrayet som data skal ligge i og alle ord hentes fra filen med fgets(). Siste del så sorteres arrayet med bubblesort for så å bli printet. Sist frier jeg alt minne jeg har brukt på slutten av programmet, resterende har blitt frigitt tidligere i kjøringen.
-
-
