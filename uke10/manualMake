@@ -1,0 +1,17 @@
+CC=gcc
+DEPS=hellomake.h
+all: hellomake
+
+hellomake.o: hellomake.c
+	$(CC) -c -o hellomake.o hellomake.c
+
+hellofunc.o: hellofunc.c
+	$(CC) -c -o hellofunc.o hellofunc.c	
+
+hellomake: hellomake.o hellofunc.o
+	$(CC) -o hellomake hellomake.o hellofunc.o
+
+clean:
+	rm -f hellomake
+
+remake: clean hellomake

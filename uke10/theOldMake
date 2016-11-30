@@ -1,0 +1,9 @@
+CC=gcc
+
+hellomake: hellomake.c hellofunc.c
+	$(CC) -o hellomake hellomake.c hellofunc.c
+
+clean:
+	rm hellomake
+
+remake: clean hellomake
